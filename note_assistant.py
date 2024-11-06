@@ -35,18 +35,27 @@ def main():
         "-t",
         "--tag",
         action="append",
-        help="Add a tag to help distinguish notes by creating specific directories to store a note under. Multi tags will result in each tag becoming the parent directory of the following tag",
+        help="Add a tag to create specific directories to store a note under. Multi tags will result in each tag becoming the parent directory of the following tag",
+    )
+    parser.add_argument(
+        "-s",
+        "--subnote",
+        action="append",
+        help="Expand on ideas of a given note. This will add sub items under your original note. If your note does not exist it will be created.",
     )
 
     # Parse Args & Options
     args = parser.parse_args()
 
-    note_assistant(args.note, args.directory, args.filename, args.tag)
+    note_assistant(args.note, args.directory, args.filename, args.tag, args.subnote)
 
 
-def note_assistant(note, directory="note_assistant/notes", file_name="na", tags=None):
-    # Check for any tags -- if they exist create a directory for each tag
-    # Parent directories will be leftmost and child directories will be rightmost
+def note_assistant(
+    note, directory="note_assistant/notes", file_name="na", tags=None, subnotes=None
+):
+    """Function that will take a string and store as a note within a given markdown file."""
+
+    # Check for any tags -- if they exist create a directory for each tag. Parent directories will be leftmost and child directories will be rightmost
     if tags:
         tags_path = ""
         for tag in tags:
@@ -57,7 +66,16 @@ def note_assistant(note, directory="note_assistant/notes", file_name="na", tags=
     path.parent.mkdir(parents=True, exist_ok=True)
 
     with path.open("a") as file:
-        file.write(f"# {note}\n")
+        # Create formatted variable to add items as necessary
+        formatted_note = f"# {note}\n"
+        
+        # Check for subnote options and add to formatted variable
+        if subnotes:
+            for sn in subnotes:
+                formatted_note += f"- {sn}\n"
+        
+        # Write to note file
+        file.write(formatted_note)
 
 
 if __name__ == "__main__":

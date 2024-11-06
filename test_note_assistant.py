@@ -18,7 +18,7 @@ def test_custom_filename_and_path(tmp_path):
 def test_single_note_in_file(tmp_path):
     note_assistant("My random thought", directory=tmp_path)
 
-    path = tmp_path / f"na.md"
+    path = tmp_path / "na.md"
     contents = path.read_text()
     assert contents == "# My random thought\n"
 
@@ -28,7 +28,7 @@ def test_multiple_notes_in_file(tmp_path):
     note_assistant("My second thought", directory=tmp_path)
     note_assistant("My third thought", directory=tmp_path)
 
-    path = tmp_path / f"na.md"
+    path = tmp_path / "na.md"
     contents = path.read_text()
     assert contents == "# My first thought\n# My second thought\n# My third thought\n"
 
@@ -36,11 +36,43 @@ def test_multiple_notes_in_file(tmp_path):
 def test_note_with_single_tag(tmp_path):
     note_assistant("My random thought with a tag", directory=tmp_path, tags=["random"])
 
-    path = tmp_path / f"random/na.md"
+    path = tmp_path / "random/na.md"
     assert path.exists()
+
 
 def test_note_with_multiple_tags(tmp_path):
-    note_assistant("My random thought with a tag", directory=tmp_path, tags=["random", "test", "deep_test"])
+    note_assistant(
+        "My random thought with a tag",
+        directory=tmp_path,
+        tags=["random", "test", "deep_test"],
+    )
 
-    path = tmp_path / f"random/test/deep_test/na.md"
+    path = tmp_path / "random/test/deep_test/na.md"
     assert path.exists()
+
+
+def test_note_with_subnote(tmp_path):
+    note_assistant(
+        "My random thought",
+        directory=tmp_path,
+        subnotes=["Subnote about my random note"],
+    )
+
+    path = tmp_path / "na.md"
+    contents = path.read_text()
+    assert contents == "# My random thought\n- Subnote about my random note\n"
+
+
+def test_note_with_multi_subnotes(tmp_path):
+    note_assistant(
+        "My random thought",
+        directory=tmp_path,
+        subnotes=["Subnote about my random note", "Second subnote", "Third subnote"],
+    )
+
+    path = tmp_path / "na.md"
+    contents = path.read_text()
+    assert (
+        contents
+        == "# My random thought\n- Subnote about my random note\n- Second subnote\n- Third subnote\n"
+    )
