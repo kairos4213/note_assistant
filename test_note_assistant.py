@@ -20,7 +20,7 @@ def test_single_note_in_file(tmp_path):
 
     path = tmp_path / f"na.md"
     contents = path.read_text()
-    assert contents == "My random thought\n"
+    assert contents == "# My random thought\n"
 
 
 def test_multiple_notes_in_file(tmp_path):
@@ -30,4 +30,17 @@ def test_multiple_notes_in_file(tmp_path):
 
     path = tmp_path / f"na.md"
     contents = path.read_text()
-    assert contents == "My first thought\nMy second thought\nMy third thought\n"
+    assert contents == "# My first thought\n# My second thought\n# My third thought\n"
+
+
+def test_note_with_single_tag(tmp_path):
+    note_assistant("My random thought with a tag", directory=tmp_path, tags=["random"])
+
+    path = tmp_path / f"random/na.md"
+    assert path.exists()
+
+def test_note_with_multiple_tags(tmp_path):
+    note_assistant("My random thought with a tag", directory=tmp_path, tags=["random", "test", "deep_test"])
+
+    path = tmp_path / f"random/test/deep_test/na.md"
+    assert path.exists()
