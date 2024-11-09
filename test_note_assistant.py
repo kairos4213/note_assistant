@@ -60,7 +60,7 @@ def test_note_with_subnote(tmp_path):
 
     path = tmp_path / "na.md"
     contents = path.read_text()
-    assert contents == "# My random thought\n- Subnote about my random note\n"
+    assert contents == "# My random thought\n\t- Subnote about my random note\n"
 
 
 def test_note_with_multi_subnotes(tmp_path):
@@ -74,5 +74,56 @@ def test_note_with_multi_subnotes(tmp_path):
     contents = path.read_text()
     assert (
         contents
-        == "# My random thought\n- Subnote about my random note\n- Second subnote\n- Third subnote\n"
+        == "# My random thought\n\t- Subnote about my random note\n\t- Second subnote\n\t- Third subnote\n"
+    )
+
+
+def test_add_subnote_to_existing_note(tmp_path):
+    note_assistant("My random thought", directory=tmp_path)
+    note_assistant(
+        "My random thought",
+        directory=tmp_path,
+        subnotes=["Subnote about my random note"],
+    )
+
+    path = tmp_path / "na.md"
+    contents = path.read_text()
+    assert contents == "# My random thought\n\t- Subnote about my random note\n"
+
+
+def test_add_multiple_subnotes_to_existing_note(tmp_path):
+    note_assistant(
+        "My random thought", directory=tmp_path, subnotes=["Subnote1", "Subnote2"]
+    )
+    note_assistant(
+        "My random thought",
+        directory=tmp_path,
+        subnotes=["Subnote3 about my random note"],
+    )
+
+    path = tmp_path / "na.md"
+    contents = path.read_text()
+    assert (
+        contents
+        == "# My random thought\n\t- Subnote1\n\t- Subnote2\n\t- Subnote3 about my random note\n"
+    )
+
+def test_add_subnotes_to_existing_file_with_multiple_notes(tmp_path):
+    note_assistant(
+        "My random thought", directory=tmp_path, subnotes=["Subnote1", "Subnote2"]
+    )
+    note_assistant(
+        "My new thought",
+        directory=tmp_path,
+        subnotes=["Subnote3"],
+    )
+    note_assistant(
+        "My random thought", directory=tmp_path, subnotes=["Subnote4", "Subnote5"]
+    )
+
+    path = tmp_path / "na.md"
+    contents = path.read_text()
+    assert (
+        contents
+        == "# My random thought\n\t- Subnote1\n\t- Subnote2\n\t- Subnote4\n\t- Subnote5\n# My new thought\n\t- Subnote3\n"
     )
