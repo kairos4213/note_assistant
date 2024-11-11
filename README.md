@@ -2,7 +2,7 @@
 A simple cli tool to store a note for user reference later (and I mean simple.)
 
 ## The "Why" for Making This
-I have been working through the boot.dev (great course, btw -- [check it out](www.boot.dev)) 
+I have been working through the boot.dev (great course, btw -- [check it out](https://www.boot.dev))
 coursework and got to the first solo project, where we were to come up with our
 own small Python project.
 
@@ -29,29 +29,37 @@ Great question. Let's start with the basics:
 
 #### Basic Note
 ```na "Remember to lookup argparse and click"```
+
 This basic input will store the reminder in the default home/note_assistant/notes/na.md file path. It won't be super pretty, but that's not what this is for.
 
 #### Note w/Custom directory and file names
 ```na "Random thought I had, that pertains to some other project" -d "path/to/my/other/project" -f "pertinent_thought"```
+
 This input will allow you to direct your note storage to a specific project for
  you to easily reference later when you're working on that project.
 
 Adding tags to the input will create subdirectories to store in a more specific 
 location:
+
 ```na "Random project thought." -d "project/path" -t "new_project_folder" -t "relevant_tag_name"```
 
 #### Adding Subnotes
 ```na "Info dump" -d "info_dump_dir" -s "Project idea one: ChatGPT wrapper that makes me money" -s "Project idea two: AI wrapper idea that will make me even more money -s "Project idea three: Databases...but with AI!```
+
 This input will store a file named "na.md" in a "info_dump_dir" under your home path
 that will contain the Info Dump note with all subnotes listed below it.
 
 If later you would like to come back and add another note, or section, to this
 file you can by doing the following:
+
 ```na "New Info dump" -d "info_dump_dir" -s "I wonder what the color blue would smell like, if colors had smells"```
+
 This appends the new note and any subnotes to the na.md file within info_dump_dir
 
 You can also come back and add a subnote to the original note within the file:
+
 ```na "Info dump" -d "info_dump_dir" -s "New Idea: Quit Programming and be a farmer. I can't buy food, but maybe I can grow it."```
+
 This will edit the original subnote section, without removing any of the notes below.
 
 ## Future

@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 
-from note_assistant import note_assistant
+from .note_assistant import note_assistant
 
 
 def app():

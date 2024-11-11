@@ -2,13 +2,15 @@ from pathlib import Path
 
 
 def note_assistant(
-    note, directory="note_assistant/notes", file_name="na", tags=None, subnotes=[]
+    note, directory="note_assistant/notes", file_name="na", tags=None, subnotes=None
 ):
     """Function that will take a string and store as a note within a given markdown file."""
 
     path = form_file_path(directory, file_name, tags)
 
     if contents := get_file(path, note, subnotes):
+        if subnotes is None:
+            subnotes = []
         updated_contents = update_and_format_file(contents, note, subnotes)
         path.write_text(updated_contents)
 
