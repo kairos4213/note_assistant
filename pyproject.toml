@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "note_assistant"
+version = "0.0.1"
+requires-python = ">=3.12.3"
+authors = [
+  { name="James Kairos", email="jamesdkairos@gmail.com" },
+]
+description = "A cli tool to allow quick note generation for later reference"
+readme = "README.md"
+keywords = ["note", "assistant", "storage", "reminders"]
+classifiers = [
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: MIT License"
+]
+
+[tool.pytest.ini_options]
+minversion = "8.3.3"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
+[project.optional-dependencies]
+test = ["pytest>=8.3.3"]
+
+[project.urls]
+Homepage = "https://github.com/kairos4213/note_assistant"
+Issues = "https://github.com/kairos4213/note_assistant/issues"
+
+[project.scripts]
+na = "note_assistant.cli:app"
