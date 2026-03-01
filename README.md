@@ -1,80 +1,97 @@
 # Note Assistant
-A simple cli tool to store a note for user reference later (and I mean simple.)
 
-## The "Why" for Making This
-I have been working through the boot.dev (great course, btw -- [check it out](https://www.boot.dev))
-coursework and got to the first solo project, where we were to come up with our
-own small Python project.
+A minimal CLI tool for capturing notes, thoughts, and reminders directly from your terminal — without breaking your flow.
 
-This was where I mulled over several different project ideas, started and stopped
-several of those ideas, and in the midst of all this (and in the chaos of being a
-father to twins) realized I was always losing notes and wished I had a way to jot
-something down quickly, without taking my eyes from the screen.
+## Motivation
 
-Enter note_assistant.
+While working through [boot.dev](https://www.boot.dev) coursework, I kept losing track of notes and ideas. As a father of twins (now two sets of twins), context-switching is constant — I needed a way to jot something down fast, without reaching for another app or taking my eyes off the screen.
 
-## Under the Hood
-If you've read this far, thanks for listening to my ramblings. Now let's get to
-why you're actually here, what is this thing and how does it work.
+Note Assistant is the result: a single command that captures a thought and gets out of the way.
 
-Simply put, it's a cli tool that allows you to enter your note/thought/reminder,
-or whatever other names exist for the inner workings of your mind, followed by 
-options for changing the storage directory(ies), filename, any subnotes you
-would like to add to that note, or creating directories for more specific storage.
-These files get stored as markdown with a simple
-header for the note and unordered list items for the subnotes.
+## Quick Start
 
-### "Okay, but what does this look like?"
-Great question. Let's start with the basics:
+**Requirements:** Python 3.12+, [uv](https://docs.astral.sh/uv/)
 
-#### Basic Note
-```na "Remember to lookup argparse and click"```
+```bash
+git clone https://github.com/kairos4213/note_assistant
+cd note_assistant
+uv sync
+```
 
-This basic input will store the reminder in the default home/note_assistant/notes/na.md file path. It won't be super pretty, but that's not what this is for.
+**Global install** — makes `na` available system-wide in any terminal session:
 
-#### Note w/Custom directory and file names
-```na "Random thought I had, that pertains to some other project" -d "path/to/my/other/project" -f "pertinent_thought"```
+```bash
+uv tool install .
+```
 
-This input will allow you to direct your note storage to a specific project for
- you to easily reference later when you're working on that project.
+**Editable install** — installs into the project venv, useful for development:
 
-Adding tags to the input will create subdirectories to store in a more specific 
-location:
+```bash
+uv pip install -e .
+```
 
-```na "Random project thought." -d "project/path" -t "new_project_folder" -t "relevant_tag_name"```
+Then capture your first note:
 
-#### Adding Subnotes
-```na "Info dump" -d "info_dump_dir" -s "Project idea one: ChatGPT wrapper that makes me money" -s "Project idea two: AI wrapper idea that will make me even more money -s "Project idea three: Databases...but with AI!```
+```bash
+na "Remember to look up argparse and click"
+```
 
-This input will store a file named "na.md" in a "info_dump_dir" under your home path
-that will contain the Info Dump note with all subnotes listed below it.
+## Usage
 
-If later you would like to come back and add another note, or section, to this
-file you can by doing the following:
+Notes are stored as markdown files under `~/note_assistant/notes/na.md` by default.
 
-```na "New Info dump" -d "info_dump_dir" -s "I wonder what the color blue would smell like, if colors had smells"```
+#### Basic note
 
-This appends the new note and any subnotes to the na.md file within info_dump_dir
+```bash
+na "My thought"
+```
 
-You can also come back and add a subnote to the original note within the file:
+#### Custom directory and filename
 
-```na "Info dump" -d "info_dump_dir" -s "New Idea: Quit Programming and be a farmer. I can't buy food, but maybe I can grow it."```
+```bash
+na "My thought" -d "projects/my_project" -f "ideas"
+```
 
-This will edit the original subnote section, without removing any of the notes below.
+Stores the note at `~/projects/my_project/ideas.md`.
 
-## Future
-Not really sure if I'll keep this project live, or not. I enjoyed working on it
-for myself, and I really did (eventually) decide I just wanted, or even needed,
-to tone down and keep it extremely simple.
+#### Tags (subdirectories)
 
-This was the first, big, solo project I have ever done. So even though it probably
-is crappy and stupid for most people, I'm satisified, currently. Eventually, I may
-come back add some features, or change some things, but we'll see.
+```bash
+na "My thought" -d "projects/my_project" -t "backend" -t "auth"
+```
 
-## Feedback
-Please provide any feedback you have. Good or bad, I know I need to grow and 
-learn, so don't hold back! I just ask for the feedback to at least be kind, if
-possible. :D
+Each tag becomes a nested subdirectory: `~/projects/my_project/backend/auth/na.md`.
 
-Any ideas you have on what could be added, or if you would like to collaborate,
-I'd love to hear from you, thanks!
+#### Subnotes
+
+```bash
+na "Info dump" -s "Idea one" -s "Idea two" -s "Idea three"
+```
+
+Subnotes are stored as list items under the note header.
+
+#### Appending to an existing note
+
+Running the same note text again adds new subnotes without removing existing ones:
+
+```bash
+na "Info dump" -s "One more idea"
+```
+
+#### All options
+
+| Flag | Long form | Description |
+|---|---|---|
+| | `note` | The note text (required) |
+| `-d` | `--directory` | Storage directory relative to home (default: `note_assistant/notes`) |
+| `-f` | `--filename` | Markdown filename without extension (default: `na`) |
+| `-t` | `--tag` | Subdirectory tag, repeatable for nesting |
+| `-s` | `--subnote` | Subnote item, repeatable |
+
+## Contributing
+
+Feedback, ideas, and contributions are welcome — this is a learning project that I built awhile ago and am now revisiting, I expect to make a few changes here and there, but this is not my main priority.
+
+- Found a bug or have a feature idea? [Open an issue](https://github.com/kairos4213/note_assistant/issues)
+- Want to contribute? Fork the repo, make your changes, and open a pull request
+- All feedback is appreciated — just keep it kind

@@ -6,19 +6,15 @@ build-backend = "hatchling.build"
 name = "note_assistant"
 version = "0.0.1"
 requires-python = ">=3.12.3"
-authors = [
-  { name="James Kairos", email="jamesdkairos@gmail.com" },
-]
+authors = [{ name = "James Kairos", email = "jamesdkairos@gmail.com" }]
 description = "A cli tool to allow quick note generation for later reference"
 readme = "README.md"
 keywords = ["note", "assistant", "storage", "reminders"]
 classifiers = [
   "Programming Language :: Python :: 3.12",
-  "License :: OSI Approved :: MIT License"
+  "License :: OSI Approved :: MIT License",
 ]
-dependencies = [
-    "rich>=14.3.3",
-]
+dependencies = ["rich>=14.3.3"]
 
 [tool.pytest.ini_options]
 minversion = "8.3.3"
