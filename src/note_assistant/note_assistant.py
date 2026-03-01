@@ -2,8 +2,12 @@ from pathlib import Path
 
 
 def note_assistant(
-    note, directory="note_assistant/notes", file_name="na", tags=None, subnotes=None
-):
+    note: str,
+    directory: str = "note_assistant/notes",
+    file_name: str = "na",
+    tags: list[str] | None = None,
+    subnotes: list[str] | None = None,
+) -> Path:
     """Function that will take a string and store as a note within a given markdown file."""
 
     path = form_file_path(directory, file_name, tags)
@@ -14,8 +18,10 @@ def note_assistant(
         updated_contents = update_and_format_file(contents, note, subnotes)
         path.write_text(updated_contents)
 
+    return path
 
-def form_file_path(directory, file_name, tags):
+
+def form_file_path(directory: str, file_name: str, tags: list[str] | None) -> Path:
     """Forms file path and makes any necessary directories"""
 
     # Check for any tags -- if they exist create a directory for each tag.
@@ -33,7 +39,7 @@ def form_file_path(directory, file_name, tags):
     return path
 
 
-def get_file(file_path, note, subnotes):
+def get_file(file_path: Path, note: str, subnotes: list[str] | None):
     """Tries to read file path, if FileNotFound, write note/subnotes to file"""
 
     try:
@@ -45,7 +51,7 @@ def get_file(file_path, note, subnotes):
             file.write(formatted_note)
 
 
-def update_and_format_file(contents, note, subnotes):
+def update_and_format_file(contents: str, note: str, subnotes: list[str]) -> str:
     """Returns formatted note with any provided subnotes to file"""
     lines = contents.splitlines(keepends=True)
 
@@ -69,8 +75,8 @@ def update_and_format_file(contents, note, subnotes):
     return "".join(lines)
 
 
-def get_note_index(lines, note):
-    """Returns index note index if found, else -1"""
+def get_note_index(lines: list[str], note: str) -> int:
+    """Returns note index if found, else -1"""
     for i in range(len(lines)):
         # If current line matches header (note):
         if lines[i] == f"# {note}\n":
@@ -78,7 +84,7 @@ def get_note_index(lines, note):
     return -1
 
 
-def get_existing_subnotes(lines, note_index):
+def get_existing_subnotes(lines: list[str], note_index: int) -> list[str]:
     """Gets any existing subnotes under note and returns as list"""
     existing_subnotes = []
     subnote_index = note_index + 1
@@ -90,7 +96,7 @@ def get_existing_subnotes(lines, note_index):
     return existing_subnotes
 
 
-def format_subnotes(subnotes):
+def format_subnotes(subnotes: list[str] | None) -> str:
     """Takes list of subnotes and returns a formatted string"""
     formatted_subnotes_string = ""
     if subnotes:
@@ -102,6 +108,6 @@ def format_subnotes(subnotes):
     return formatted_subnotes_string
 
 
-def format_note(note, subnotes_string):
+def format_note(note: str, subnotes_string: str) -> str:
     """Takes a note and formatted subnote string and returns formatted note"""
     return f"# {note}\n" + subnotes_string
