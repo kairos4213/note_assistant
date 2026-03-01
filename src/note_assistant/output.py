@@ -7,7 +7,7 @@ def display_output(note_path: Path) -> None:
     """Takes file path for note and prints pretty output to display"""
 
     console = Console()
-    console.print(note_path)
+    console.print(f"[bold]Saved to: [italic]{note_path}")
 
     with note_path.open("r") as file:
         content = file.read()
