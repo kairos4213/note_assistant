@@ -16,6 +16,9 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "License :: OSI Approved :: MIT License"
 ]
+dependencies = [
+    "rich>=14.3.3",
+]
 
 [tool.pytest.ini_options]
 minversion = "8.3.3"

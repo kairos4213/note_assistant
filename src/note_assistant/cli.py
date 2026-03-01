@@ -2,6 +2,7 @@ import argparse
 from pathlib import Path
 
 from .note_assistant import note_assistant
+from .output import display_output
 
 
 def app():
@@ -49,7 +50,10 @@ def app():
     # Parse Args & Options
     args = parser.parse_args()
 
-    note_assistant(args.note, args.directory, args.filename, args.tag, args.subnote)
+    note_path = note_assistant(
+        args.note, args.directory, args.filename, args.tag, args.subnote
+    )
+    display_output(note_path)
 
 
 if __name__ == "__main__":
